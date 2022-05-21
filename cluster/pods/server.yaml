@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: keyholder
+  name: keyholder-server
+  labels:
+    app: keyholder-server
+spec:
+  selector:
+    matchLabels:
+      app: keyholder-server
+  template:
+    metadata:
+      labels:
+        app: keyholder-server
+    spec:
+      containers:
+      - name: keyholder-server
+        image: maprox/keyholder-server:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: REDIS_HOST
+          value: redis
+        - name: REDIS_PORT
+          value: "6379"
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: server
+              key: JWT_SECRET
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: keyholder
+  name: keyholder-server
+  labels:
+    app: keyholder-server
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP
+      name: http
+  selector:
+    app: keyholder-server

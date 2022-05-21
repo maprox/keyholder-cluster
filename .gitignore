@@ -1,0 +1,4 @@
+.idea
+
+cluster/secrets/*
+!cluster/secrets/.gitignore

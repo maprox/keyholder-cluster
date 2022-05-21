@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: keyholder
+  name: keyholder-angular
+  labels:
+    app: keyholder-angular
+spec:
+  selector:
+    matchLabels:
+      app: keyholder-angular
+  template:
+    metadata:
+      labels:
+        app: keyholder-angular
+    spec:
+      containers:
+      - name: keyholder-angular
+        args:
+        - build-staging
+        image: maprox/keyholder-angular:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: keyholder
+  name: keyholder-angular
+  labels:
+    app: keyholder-angular
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: keyholder-angular
