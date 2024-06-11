@@ -35,10 +35,10 @@ spec:
           mountPath: /data/redis
         ports:
         - containerPort: 6379
-    volumes:
-    - name: redis-storage
-      persistentVolumeClaim:
-        claimName: local-path-pvc-redis
+      volumes:
+      - name: redis-storage
+        persistentVolumeClaim:
+          claimName: local-path-pvc-redis
 ---
 apiVersion: v1
 kind: Service
